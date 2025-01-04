@@ -1,0 +1,15 @@
+{
+	"ok": true,
+	"status": {
+		"eu": {
+			"online": true,
+			"name": "eu",
+			"uptime": 0.0,
+			"clients": 0,
+			"mspt": 0.0,
+			"code": "hetzner-fsn-f",
+			"host": "qrp6ujau11f36bnm.uvwx.xyz:5070",
+			"hidden": false
+		}
+	}
+}
