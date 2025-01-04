@@ -1,0 +1,15 @@
+{
+	"ok": true,
+	"status": {
+		"x": {
+			"online": true,
+			"name": "ev",
+			"uptime": 0.0,
+			"clients": -1,
+			"mspt": 0.0,
+			"code": "hetzner-fsn-",
+			"host": "qrp6ujau11f36bnm.uvwx.xyz:5080",
+			"hidden": false
+		}
+	}
+}
