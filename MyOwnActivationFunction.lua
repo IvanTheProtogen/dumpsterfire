@@ -54,21 +54,34 @@ local function CreateCAF(n,p)
     end
 end
 
-local neuronS = Neuron.new(CreateCAF(1,1), {0.5, 0.5}, 0.5)
-local neuronL = Neuron.new(CreateCAF(0,0), {0.5, 0.5}, 0.5)
-local neuronU = Neuron.new(CreateCAF(0.5,0.5), {0.5, 0.5}, 0.5)
+local function relu(x)
+    return math.max(0,x)
+end
+
+local function swish(x)
+    return x*(1/(1+math.exp(-x)))
+end
+
+local neuronR = Neuron.new(relu, {0.5, 0.5}, 0.5)
+local neuronS = Neuron.new(swish, {0.5, 0.5}, 0.5)
+local neuronP = Neuron.new(CreateCAF(1.5,-0.5), {0.5, 0.5}, 0.5)
 
 local times = 0
 while times < 1000000 do
     local a = math.random(0,10)/10
     local b = math.random(0,10)/10
     local x = a-b
-    neuronS:train({a,b},x,0.1)
-    neuronL:train({a,b},x,0.1)
-    neuronU:train({a,b},x,0.1)
-    times=times+1
+    if x >= 0 then
+        neuronR:train({a,b},x,0.1)
+        neuronS:train({a,b},x,0.1)
+        neuronP:train({a,b},x,0.1)
+        times=times+1
+    end
 end
 
-print("Smooth Neuron: 0.5 - 0.3 =",neuronS:activate({0.5,0.3})) -- 0.27
-print("Linear Neuron: 0.5 - 0.3 =",neuronL:activate({0.5,0.3})) -- 0.20
-print("Universal Neuron: 0.5 - 0.3 =",neuronU:activate({0.5,0.3})) -- 0.24
+local a = 0.7
+local b = 0.2
+
+print("ReLU Neuron:",a,"-",b,"=",neuronR:activate({a,b}))
+print("Swish Neuron:",a,"-",b,"=",neuronS:activate({a,b}))
+print("PwUU (mimicking Swish) Neuron:",a,"-",b,"=",neuronP:activate({a,b}))
