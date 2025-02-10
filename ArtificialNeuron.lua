@@ -1,5 +1,7 @@
 -- skidded out from AI, cuz idk anything about implementing a neuron lol
--- well, i added it a little.. so yeah
+-- well, i edited it a little.. so yeah 
+
+-- local Neuron=loadstring(game:HttpGet("https://raw.githubusercontent.com/IvanTheProtogen/dumpsterfire/refs/heads/main/ArtificialNeuron.lua"))();
 
 Neuron = {}
 Neuron.__index = Neuron
