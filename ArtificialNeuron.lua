@@ -1,4 +1,4 @@
-print("Hello World!")-- skidded out from AI, cuz idk anything about implementing a neuron lol
+-- skidded out from AI, cuz idk anything about implementing a neuron lol
 -- well, i edited it a little.. so yeah 
 
 -- getgenv().Neuron=getgenv().Neuron or loadstring(game:HttpGet("https://raw.githubusercontent.com/IvanTheProtogen/dumpsterfire/refs/heads/main/ArtificialNeuron.lua"))();
