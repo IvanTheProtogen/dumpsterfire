@@ -1,4 +1,4 @@
--- skidded out from AI, cuz idk anything about implementing a neuron lol
+print("Hello World!")-- skidded out from AI, cuz idk anything about implementing a neuron lol
 -- well, i edited it a little.. so yeah 
 
 -- getgenv().Neuron=getgenv().Neuron or loadstring(game:HttpGet("https://raw.githubusercontent.com/IvanTheProtogen/dumpsterfire/refs/heads/main/ArtificialNeuron.lua"))();
@@ -6,9 +6,10 @@
 Neuron = {}
 Neuron.__index = Neuron
 
-function Neuron.new(activFunc, weights, bias)
+function Neuron.new(activFunc, derivFunc, weights, bias)
     local self = setmetatable({}, Neuron)
     self.activFunc = activFunc
+    self.derivFunc = derivFunc -- if you DONT want to use the derivative, set it as function()return 1 end.
     self.weights = weights
     self.bias = bias
     return self
@@ -25,17 +26,18 @@ function Neuron:activate(inputs)
 end
 
 function Neuron:train(inputs, reward, learningRate, gamma, nextInputs)
+    -- gamma and nextInputs are optional
     local output = self:activate(inputs)
     local target = reward
     if nextInputs then
         local nextOutput = self:activate(nextInputs)
         target = reward + gamma * nextOutput
     end
-    local error = target - output
+    local gradient = self.derivFunc(output)*(target-output)
     for i = 1, #self.weights do
-        self.weights[i] = self.weights[i] + learningRate * error * inputs[i]
+        self.weights[i] = self.weights[i] + learningRate * gradient * inputs[i]
     end
-    self.bias = self.bias + learningRate * error
+    self.bias = self.bias + learningRate * gradient
     return output
 end
 
