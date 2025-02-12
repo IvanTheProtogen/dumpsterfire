@@ -9,7 +9,7 @@ Neuron.__index = Neuron
 function Neuron.new(activFunc, derivFunc, weights, bias)
     local self = setmetatable({}, Neuron)
     self.activFunc = activFunc
-    self.derivFunc = derivFunc
+    self.derivFunc = derivFunc -- set it to `function()return 1 end` if you dont wanna use it
     self.weights = weights
     self.bias = bias
     return self
@@ -25,7 +25,7 @@ function Neuron:activate(inputs)
     return self.activFunc(sum),sum
 end
 
-function Neuron:train(inputs, reward, learningRate, gamma, nextInputs)
+function Neuron:train(inputs, reward, learningRate, gamma, nextInputs) -- you don't really need to use this method, but imma keep it here for the new guys like me
     -- gamma and nextInputs are optional
     local output, sum = self:activate(inputs)
     local target = reward
