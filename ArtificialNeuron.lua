@@ -26,6 +26,7 @@ function Neuron:activate(inputs)
 end
 
 function Neuron:train(inputs, reward, learningRate, gamma, nextInputs)
+    -- gamma and nextInputs are optional
     local output, sum = self:activate(inputs)
     local target = reward
     if nextInputs then
