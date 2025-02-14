@@ -1,12 +1,6 @@
 -- No UI, since this is a prototype 
 
--- Epik script data corruptor
-
-local part = [[local queueonteleport = function()end
-local queue_on_teleport = function()end
-]]
-
-local target = loadstring(part..game:HttpGet('https://github.com/EdgeIY/infiniteyield/raw/master/source'))
+local target = loadstring(game:HttpGet('https://github.com/IvanTheProtogen/Raspberry-Pi-White-Dex-V2/raw/main/mainpart'))
 
 local function modify(tbl, rarity, intensity)
 	local tbll = {}
@@ -35,6 +29,4 @@ local function main(func, rarity, intensity)
 	return func
 end
 
-getgenv().IY_LOADED = nil
 main(target, 1, 10)()
-getgenv().IY_LOADED = nil
