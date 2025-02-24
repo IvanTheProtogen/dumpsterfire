@@ -14,10 +14,10 @@ NeuralNetwork = {
         options = options or {}
         
         nn.learningRate = options.learningRate or 0.01
-        nn.activation = options.activation or function(x) return math.tanh(x) end
-        nn.activationDeriv = options.activationDeriv or function(y) return 1 - y^2 end
+        nn.activation = options.activation or function(x) return x end
+        nn.activationDeriv = options.activationDeriv or function() return 1 end
         nn.outputActivation = options.outputActivation or function(x) return x end
-        nn.outputDeriv = options.outputDeriv or function(y) return 1 end
+        nn.outputDeriv = options.outputDeriv or function() return 1 end
 
         local function createMatrix(rows, cols)
             local m = {}
