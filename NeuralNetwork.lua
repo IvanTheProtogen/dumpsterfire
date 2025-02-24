@@ -1,7 +1,7 @@
 -- 100% made by DeepSeek R1...
 -- ...cuz im a skid :3
 
--- NeuralNetwork.new(self, inputSize, hiddenLayers, outputSize, options)
+-- NeuralNetwork.new(inputSize, hiddenLayers, outputSize, options)
 -- NeuralNetwork:forward(input)
 -- NeuralNetwork:backwardPropagation(target)
 -- NeuralNetwork:backwardReinforce(action, reward)
@@ -9,7 +9,7 @@
 -- getgenv().NeuralNetwork=getgenv().NeuralNetwork or loadstring(game:HttpGet("https://raw.githubusercontent.com/IvanTheProtogen/dumpsterfire/refs/heads/main/NeuralNetwork.lua"))();
 
 NeuralNetwork = {
-    new = function(self, inputSize, hiddenLayers, outputSize, options)
+    new = function(inputSize, hiddenLayers, outputSize, options)
         local nn = {}
         options = options or {}
         
