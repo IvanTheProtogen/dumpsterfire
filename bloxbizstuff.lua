@@ -51,14 +51,6 @@ local args = {
                 ["AccessoryType"] = Enum.AccessoryType.Shoulder
             },
             [7] = {
-                ["Rotation"] = Vector3.new(-105,180,0),
-                ["AssetId"] = 10095627733,
-                ["Position"] = Vector3.new(-1.1, 1, -0.8),
-                ["Scale"] = Vector3.new(1, 1, 1),
-                ["IsLayered"] = false,
-                ["AccessoryType"] = Enum.AccessoryType.Waist
-            },
-            [8] = {
                 ["Rotation"] = Vector3.new(0, 0, 0),
                 ["AssetId"] = 607702162,
                 ["Position"] = Vector3.new(0, 0, 0),
@@ -66,7 +58,7 @@ local args = {
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Hat
             },
-            [9] = {
+            [8] = {
                 ["Rotation"] = Vector3.new(0, 0, 0),
                 ["AssetId"] = 11714797755,
                 ["Position"] = Vector3.new(0, 0, 0),
@@ -74,7 +66,7 @@ local args = {
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Hat
             },
-            [10] = {
+            [9] = {
                 ["Rotation"] = Vector3.new(0, 0, 0),
                 ["AssetId"] = 7485974573,
                 ["Position"] = Vector3.new(0, 0, 0),
@@ -82,36 +74,44 @@ local args = {
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Waist
             },
-            [11] = {
-                ["Rotation"] = Vector3.new(0, 0, 0),
-                ["AssetId"] = 124899455887488,
-                ["Position"] = Vector3.new(0.25, 0, -0.2),
-                ["Scale"] = Vector3.new(2/3, 2/3, 2/3),
-                ["IsLayered"] = false,
-                ["AccessoryType"] = Enum.AccessoryType.Waist
-            },
-            [12] = {
-                ["Rotation"] = Vector3.new(0, 0, 0),
-                ["AssetId"] = 98783947166372,
-                ["Position"] = Vector3.new(-0.25, 0, -0.2),
-                ["Scale"] = Vector3.new(2/3, 2/3, 2/3),
-                ["IsLayered"] = false,
-                ["AccessoryType"] = Enum.AccessoryType.Waist
-            },
-            [13] = {
+            [10] = {
                 ["Rotation"] = Vector3.new(65, 0, 0),
                 ["AssetId"] = 15937580696,
                 ["Position"] = Vector3.new(0, -0.2, 0),
                 ["Scale"] = Vector3.new(1.5, 1.5, 1.5),
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Face
+            },
+            [11] = {
+                ["Rotation"] = Vector3.new(-90, 0, 180),
+                ["AssetId"] = 123708205722564,
+                ["Position"] = Vector3.new(0, 0.75, -1-(2/3)),
+                ["Scale"] = Vector3.new(2/3, 2/3, 2/3),
+                ["IsLayered"] = false,
+                ["AccessoryType"] = Enum.AccessoryType.Waist
+            },
+            [12] = {
+                ["Rotation"] = Vector3.new(0, 0, 0),
+                ["AssetId"] = 16682314865,
+                ["Position"] = Vector3.new(0.15,-0.25,-1.3),
+                ["Scale"] = Vector3.new(1.25,1.25,1.25),
+                ["IsLayered"] = false,
+                ["AccessoryType"] = Enum.AccessoryType.Waist
+            },
+            [13] = {
+                ["Rotation"] = Vector3.new(0,0,0),
+                ["AssetId"] = 14447854357,
+                ["Position"] = Vector3.new(-0.15,-0.25,-1.3),
+                ["Scale"] = Vector3.new(1.25,1.25,1.25),
+                ["IsLayered"] = false,
+                ["AccessoryType"] = Enum.AccessoryType.Waist
             }
         },
         ["RightLegColor"] = nil --[[Color3]],
         ["MoodAnimation"] = 0,
         ["LeftLegColor"] = nil --[[Color3]],
         ["JumpAnimation"] = 5319917561,
-        ["ProportionScale"] = 1,
+        ["ProportionScale"] = 0.5,
         ["BodyTypeScale"] = 0.30000001192092896,
         ["ClimbAnimation"] = 5319931619,
         ["LeftArmColor"] = nil --[[Color3]],
