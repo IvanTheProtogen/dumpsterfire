@@ -107,17 +107,17 @@ local args = {
                 ["AccessoryType"] = Enum.AccessoryType.Waist
             },
             [14] = {
-                ["Rotation"] = Vector3.new(0, 0, 0),
+                ["Rotation"] = Vector3.new(0, 90, 120),
                 ["AssetId"] = 17165122954,
-                ["Position"] = Vector3.new(0, 0, 0),
+                ["Position"] = Vector3.new(0.4, -0.2, -0.2),
                 ["Scale"] = Vector3.new(1, 1, 1),
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Back
             },
             [15] = {
-                ["Rotation"] = Vector3.new(0, 0, 0),
+                ["Rotation"] = Vector3.new(25, 180, 0),
                 ["AssetId"] = 120703065106664,
-                ["Position"] = Vector3.new(0, 0, 0),
+                ["Position"] = Vector3.new(0.3, 0, 0.3),
                 ["Scale"] = Vector3.new(1, 1, 1),
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Waist
