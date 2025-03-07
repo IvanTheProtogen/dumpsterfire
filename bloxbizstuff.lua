@@ -1,3 +1,6 @@
+local remote = game:GetService("ReplicatedStorage").BloxbizRemotes.CatalogOnApplyOutfit
+
+while true do
 local args = {
     [1] = {
         ["WalkAnimation"] = 5319909330,
@@ -75,14 +78,6 @@ local args = {
                 ["AccessoryType"] = Enum.AccessoryType.Waist
             },
             [10] = {
-                ["Rotation"] = Vector3.new(65, 0, 0),
-                ["AssetId"] = 15937580696,
-                ["Position"] = Vector3.new(0, -0.2, 0),
-                ["Scale"] = Vector3.new(1.5, 1.5, 1.5),
-                ["IsLayered"] = false,
-                ["AccessoryType"] = Enum.AccessoryType.Face
-            },
-            [11] = {
                 ["Rotation"] = Vector3.new(-90, 0, 180),
                 ["AssetId"] = 123708205722564,
                 ["Position"] = Vector3.new(0, 0.75, -1-(2/3)),
@@ -90,7 +85,7 @@ local args = {
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Waist
             },
-            [12] = {
+            [11] = {
                 ["Rotation"] = Vector3.new(0, 0, 0),
                 ["AssetId"] = 16682314865,
                 ["Position"] = Vector3.new(0.15,-0.25,-1.3),
@@ -98,7 +93,7 @@ local args = {
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Waist
             },
-            [13] = {
+            [12] = {
                 ["Rotation"] = Vector3.new(0,0,0),
                 ["AssetId"] = 14447854357,
                 ["Position"] = Vector3.new(-0.15,-0.25,-1.3),
@@ -106,7 +101,7 @@ local args = {
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Waist
             },
-            [14] = {
+            [13] = {
                 ["Rotation"] = Vector3.new(0, 90, 120),
                 ["AssetId"] = 17165122954,
                 ["Position"] = Vector3.new(0.4, -0.2, -0.2),
@@ -114,7 +109,7 @@ local args = {
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Back
             },
-            [15] = {
+            [14] = {
                 ["Rotation"] = Vector3.new(25, 180, 0),
                 ["AssetId"] = 120703065106664,
                 ["Position"] = Vector3.new(0.3, 0, 0.3),
@@ -122,7 +117,7 @@ local args = {
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Waist
             },
-            [16] = {
+            [15] = {
                 ["Rotation"] = Vector3.new(0, 0, 0),
                 ["AssetId"] = 12421057027,
                 ["Position"] = Vector3.new(0, 1, -0.8),
@@ -130,13 +125,21 @@ local args = {
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Waist
             },
-            [17] = {
+            [16] = {
                 ["Rotation"] = Vector3.new(0, 0, 180),
                 ["AssetId"] = 7669629724,
                 ["Position"] = Vector3.new(0, 1.55, -0.8),
                 ["Scale"] = Vector3.new(0.1, 0.3, 0.1),
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Waist
+            },
+            [17] = {
+                ["Rotation"] = Vector3.new(0, 0+x, 0),
+                ["AssetId"] = 18839688816,
+                ["Position"] = Vector3.new(2, 0.5+(math.sin((math.pi/180)*x)/2), -0.5),
+                ["Scale"] = Vector3.new(0.5, 0.5, 0.5),
+                ["IsLayered"] = false,
+                ["AccessoryType"] = Enum.AccessoryType.Hat
             }
         },
         ["RightLegColor"] = nil --[[Color3]],
@@ -162,7 +165,7 @@ local args = {
         ["Torso"] = 48474356,
         ["FallAnimation"] = 5319914476,
         ["TorsoColor"] = nil --[[Color3]],
-        ["IdleAnimation"] = 5319922112,
+        ["IdleAnimation"] = 619511648,
         ["LeftArm"] = 0,
         ["HeadScale"] = 1,
         ["HeightScale"] = 1,
@@ -171,4 +174,7 @@ local args = {
     }
 }
 
-pcall(function()game:GetService("ReplicatedStorage").BloxbizRemotes.CatalogOnApplyOutfit:FireServer(unpack(args))end)
+remote:FireServer(unpack(args))
+x = x+5
+task.wait(1/20)
+end
