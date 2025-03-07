@@ -1,4 +1,5 @@
 local remote = game:GetService("ReplicatedStorage").BloxbizRemotes.CatalogOnApplyOutfit
+local x = 0
 
 while true do
 local args = {
