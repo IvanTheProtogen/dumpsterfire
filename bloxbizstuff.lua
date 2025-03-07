@@ -118,7 +118,23 @@ local args = {
                 ["Rotation"] = Vector3.new(25, 180, 0),
                 ["AssetId"] = 120703065106664,
                 ["Position"] = Vector3.new(0.3, 0, 0.3),
-                ["Scale"] = Vector3.new(1, 1, 1),
+                ["Scale"] = Vector3.new(0.5, 0.5, 0.5),
+                ["IsLayered"] = false,
+                ["AccessoryType"] = Enum.AccessoryType.Waist
+            },
+            [16] = {
+                ["Rotation"] = Vector3.new(0, 0, 0),
+                ["AssetId"] = 12421057027,
+                ["Position"] = Vector3.new(0, 1, -0.8),
+                ["Scale"] = Vector3.new(0.175, 0.175, 0.125),
+                ["IsLayered"] = false,
+                ["AccessoryType"] = Enum.AccessoryType.Waist
+            },
+            [17] = {
+                ["Rotation"] = Vector3.new(0, 0, 180),
+                ["AssetId"] = 7669629724,
+                ["Position"] = Vector3.new(0, 1.55, -0.8),
+                ["Scale"] = Vector3.new(0.1, 0.3, 0.1),
                 ["IsLayered"] = false,
                 ["AccessoryType"] = Enum.AccessoryType.Waist
             }
