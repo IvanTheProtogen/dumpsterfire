@@ -94,7 +94,8 @@ scroll.BorderSizePixel = 0
 scroll.BackgroundColor3 = Color3.fromRGB(27,27,27)
 scroll.Size = UDim2.new(0,380,0,220)
 scroll.Position = UDim2.new(0,10,0,10)
-scroll.Active = true
+scroll.Active = true 
+scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 local file = Instance.new("TextButton")
 file.Archivable = true
@@ -127,5 +128,5 @@ for i,v in getfiles() do
 end
 
 for i,v in getfilesAE() do
-	runfile(v)
+	task.spawn(runfile,v)
 end
