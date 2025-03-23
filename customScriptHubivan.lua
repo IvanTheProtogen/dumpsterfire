@@ -6,7 +6,7 @@ if customScriptHubivan then
 end 
 getgenv().customScriptHubivan = true 
 
-local src == [[
+local src = [[
 
 local ExtraAbilities=getgenv().ExtraAbilities or loadstring(game:HttpGet("http://github.com/IvanTheProtogen/ExtraAbilities/raw/main/main.lua"))();
 
