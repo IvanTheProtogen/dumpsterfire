@@ -1,6 +1,13 @@
 -- it's a lazy script hub, not so user friendly but simple
 -- made for myself personally
 
+if customScriptHubivan then 
+	return 
+end 
+getgenv().customScriptHubivan = true 
+
+local src == [[
+
 local ExtraAbilities=getgenv().ExtraAbilities or loadstring(game:HttpGet("http://github.com/IvanTheProtogen/ExtraAbilities/raw/main/main.lua"))();
 
 local coregui = game:GetService("CoreGui")
@@ -130,3 +137,8 @@ end
 for i,v in getfilesAE() do
 	task.spawn(runfile,v)
 end
+
+]]
+
+queueonteleport(src)
+loadstring(src)() 
