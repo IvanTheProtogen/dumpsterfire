@@ -8,6 +8,8 @@ getgenv().customScriptHubivan = true
 
 local src = [[
 
+queueonteleport(game:HttpGet("http://github.com/IvanTheProtogen/dumpsterfire/raw/main/customScriptHubivan.lua"))
+
 local ExtraAbilities=getgenv().ExtraAbilities or loadstring(game:HttpGet("http://github.com/IvanTheProtogen/ExtraAbilities/raw/main/main.lua"))();
 
 local coregui = game:GetService("CoreGui")
@@ -140,5 +142,4 @@ end
 
 ]]
 
-queueonteleport(src)
-loadstring(src)() 
+loadstring(src)()
