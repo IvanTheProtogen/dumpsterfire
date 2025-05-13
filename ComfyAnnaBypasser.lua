@@ -25,9 +25,11 @@ local gui = game:GetService("CoreGui"):WaitForChild("AnnaBypasser")
 local children = gui.Frame:GetChildren()
 children[2].ClearTextOnFocus = false
 children[4].ClearTextOnFocus = false
-children[3].MouseButton1Click:Connect(function()
-	task.wait()
-	children[2].Text = ""
+children[2].FocusLost:Connect(function(enterPressed)
+	if enterPressed then
+		task.wait()
+		children[2].Text = ""
+	end
 end)
 Instance.new("UIScale",gui).Scale = 0.6
 gui.Frame.Position = UDim2.new(0,1280,0,0)
