@@ -39,7 +39,7 @@ local function trickster(msg)
 	return msg 
 end 
 hookfunction(chat.FilterStringAsync, trickster)
-hookfunction(chat.FilterStringForBroadcastAsync, trickster)
+hookfunction(chat.FilterStringForBroadcast, trickster)
 
 task.wait(0.5)
 canTalk = true
