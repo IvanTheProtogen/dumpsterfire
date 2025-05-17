@@ -34,5 +34,12 @@ end)
 Instance.new("UIScale",gui).Scale = 0.6
 gui.Frame.Position = UDim2.new(0,1280,0,0)
 
+local chat = game:GetService("Chat")
+local function trickster(msg)
+	return msg 
+end 
+hookfunction(chat.FilterStringAsync, trickster)
+hookfunction(chat.FilterStringForBroadcastAsync, trickster)
+
 task.wait(0.5)
 canTalk = true
