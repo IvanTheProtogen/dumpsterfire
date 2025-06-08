@@ -117,7 +117,7 @@ local function init(dmp)
 				while true do 
 					io.write("Bytecode valid, should it be ran? (Y/N) ")
 					local input = io.read():lower():sub(1,1)
-          if input == "y" then
+					if input == "y" then
 						local tm = os.clock()
 						local result = {pcall(func)}
 						print("\nTIME TAKEN:",os.clock()-tm)
