@@ -8,8 +8,6 @@ end
 
 local manual = {
 	"",
-	"Hi, welcome to the manual! Here's how the commands work:",
-	"",
 	">(Pointer Location) -- Sets the pointer's location across the bytecode.",
 	">+(Value) -- Increments the pointer by the value, default value is 1.",
 	">-(Value) -- Decrememts the pointer by the value, default value is 1.",
@@ -19,7 +17,7 @@ local manual = {
 	"!(Byte amount) -- Allocates bytes on the pointer's location, default amount is 1.",
 	"!>(Byte amount) -- Allocates bytes at the end of the bytecode, default amount is 1.",
 	"?(Byte amount) -- Deallocates bytes on the pointer's location, default amount is 1.",
-	"%(Range) -- Expands the view of the bytecode, default range is 2.",
+	"%(Range) -- Expands the view of the bytecode, default range is 5.",
 	"$ -- Executes the bytecode.",
 	"x -- Exits the program, along with printing out the resulted bytecode.",
 	"m -- The manual itself!",
@@ -42,7 +40,7 @@ local function init(dmp)
 	end
 	-- run
 	local pointer = 1
-	local range = 2
+	local range = 5
 	local suc,func
 	while true do
 		-- validate bytecode
@@ -67,16 +65,21 @@ local function init(dmp)
 			end
 			print(offset,hex," -- ",byte)
 		end
-		if suc then
-			print("BYTECODE VALID?: YES")
+		if not suc or not func then
+			print("BYTECODE VALID?: NO")
 		else
-			print("BYTECODE VALID? NO")
+			print("BYTECODE VALID? YES")
 		end
 		-- take and execute user input
 		io.write("\nACTION: ")
 		local input = io.read()
 		if input:sub(1,1) == "'" then
-			bytes[pointer] = input:sub(2,2):byte() or bytes[pointer]
+			local chars = input:sub(2)
+			if chars then
+				for i=1,#chars do
+					bytes[pointer+(i-1)] = chars:sub(i,i):byte()
+				end
+			end
 		elseif input:sub(1,2):lower() == "\\x" then
 			bytes[pointer] = tonumber(input:sub(3),16) or bytes[pointer]
 		elseif input:sub(1,1) == "\\" then
@@ -156,6 +159,13 @@ local function init(dmp)
 			end
 		elseif input:sub(1,1):lower() == "d" then
 			print("\n\\"..table.concat(bytes,"\\"))
+		end
+		if pointer < 1 then
+			pointer = 1
+			io.write("\nPointer can't go out of bounds! (Underflow)")
+		elseif pointer > #bytes then
+			pointer = #bytes
+			io.write("\nPointer can't go out of bounds! (Overflow)")
 		end
 		suc,func = nil,nil
 		io.write("\n")
