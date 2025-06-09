@@ -25,7 +25,7 @@ local manual = {
 	"load:(Plugin Name) -- Runs the plugin, along with user input to it."
 }
 
-local function init(dmp)
+local function init(dmp,pointer,range)
 	print("LBCEdit -- I/O-controlled Lua closure analysis")
 	print("Type 'm' to see the manual on using this program.")
 	print("Lua version:",_VERSION,"\n")
@@ -33,14 +33,14 @@ local function init(dmp)
 	if type(dmp) == "function" then 
 		dmp = string.dump(dmp)
 	end
+	pointer = pointer or 1
+	range = range or 5
 	-- split dump
 	local bytes = {}
 	for byte in dmp:gmatch(".") do
 		table.insert(bytes,byte:byte())
 	end
 	-- run
-	local pointer = 1
-	local range = 5
 	local suc,func
 	while true do
 		-- validate bytecode
@@ -148,6 +148,11 @@ local function init(dmp)
 						print("\nTIME TAKEN:",os.clock()-tm)
 						print("RESULT:\n")
 						prettytable(result,"")
+						if result[1] then
+							bytes = result[2] or bytes
+							pointer = result[3] or pointer
+							range = result[4] or range
+						end
 						break
 					elseif input == "n" then
 						print("Execution cancelled")
