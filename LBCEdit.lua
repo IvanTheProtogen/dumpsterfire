@@ -20,7 +20,7 @@ local manual = {
 	"!>(Byte amount) -- Allocates bytes at the end of the bytecode, default amount is 1.",
 	"?(Byte amount) -- Deallocates bytes on the pointer's location, default amount is 1.",
 	"%(Range) -- Expands the view of the bytecode, default range is 2.",
-	"$ -- Validates the bytecode, checking if it's executable or not.",
+	"$ -- Executes the bytecode.",
 	"x -- Exits the program, along with printing out the resulted bytecode.",
 	"m -- The manual itself!",
 	"d -- Dumps the whole bytecode like x command, but doesn't exit.",
