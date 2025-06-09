@@ -22,7 +22,9 @@ local manual = {
 	"%(Range) -- Expands the view of the bytecode, default range is 2.",
 	"$ -- Validates the bytecode, checking if it's executable or not.",
 	"x -- Exits the program, along with printing out the resulted bytecode.",
-	"m -- The manual itself!"
+	"m -- The manual itself!",
+	"d -- Dumps the whole bytecode like x command, but doesn't exit.",
+	"load:(Plugin Name) -- Runs the plugin, along with user input to it."
 }
 
 local function init(dmp)
@@ -41,7 +43,14 @@ local function init(dmp)
 	-- run
 	local pointer = 1
 	local range = 2
+	local suc,func
 	while true do
+		-- validate bytecode
+		func,suc = ""
+		for _,byte in next,bytes do
+			func = func..string.char(byte)
+		end
+		suc,func = pcall(load or loadstring,func)
 		-- print dump
 		print("SIZE: ",#bytes," || POINTER: ",pointer)
 		for idx=pointer-range,pointer+range do
@@ -57,6 +66,11 @@ local function init(dmp)
 				byte = string.char(byte)
 			end
 			print(offset,hex," -- ",byte)
+		end
+		if suc then
+			print("BYTECODE VALID?: YES")
+		else
+			print("BYTECODE VALID? NO")
 		end
 		-- take and execute user input
 		io.write("\nACTION: ")
@@ -106,20 +120,28 @@ local function init(dmp)
 			break
 		elseif input:sub(1,1) == "$" then
 			io.write("\n")
-			local func,suc = ""
-			for _,byte in next,bytes do
-				func = func..string.char(byte)
-			end
-			suc,func = pcall(load or loadstring, func)
 			if not suc or not func then 
-				print("Bytecode invalid, reason:",func)
+				print("Bytecode not executable")
 			else
-				while true do 
-					io.write("Bytecode valid, should it be ran? (Y/N) ")
-					local input = io.read():lower():sub(1,1)
-					if input == "y" then
+					local tm = os.clock()
+					local result = {pcall(func)}
+					print("\nTIME TAKEN:",os.clock()-tm)
+					print("RESULT:\n")
+					prettytable(result,"")
+			end
+		elseif input:sub(1,1):lower() == "m" then
+			print(table.concat(manual,"\n"))
+		elseif input:sub(1,5):lower() == "load:" then
+			local suc,func = pcall(require, input:sub(6))
+			if suc then
+				io.write("\nPlugin available, run it? (Y/N) ")
+				while true do
+					local input = io.read():sub(1,1):lower()
+					if input == "y" then 
+						io.write("PLUGIN INPUT: ")
+						local input = io.read()
 						local tm = os.clock()
-						local result = {pcall(func)}
+						local result = {pcall(func,bytes,pointer,input)}
 						print("\nTIME TAKEN:",os.clock()-tm)
 						print("RESULT:\n")
 						prettytable(result,"")
@@ -129,10 +151,13 @@ local function init(dmp)
 						break
 					end
 				end
+			else
+				print("Plugin not found!")
 			end
-		elseif input:sub(1,1):lower() == "m" then
-			print(table.concat(manual,"\n"))
+		elseif input:sub(1,1):lower() == "d" then
+			print("\n\\"..table.concat(bytes,"\\"))
 		end
+		suc,func = nil,nil
 		io.write("\n")
 	end
 	print("\nProgram has stopped, here's the full result:")
