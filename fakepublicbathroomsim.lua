@@ -61,13 +61,26 @@ TextColor3 = Color3.new(1,1,1),
 Position = UDim2.new(0.5,0,0,39),
 Size = UDim2.new(0.9,0,0,15)
 })
+local bringplayer = create("TextBox",{
+Parent = frame,
+AnchorPoint = Vector2.new(0.5,0),
+BackgroundColor3 = Color3.fromRGB(27,27,27),
+BorderSizePixel = 0,
+Text = "",
+PlaceholderText = "Bring player...",
+PlaceholderColor3 = Color3.new(0.5,0.5,0.5),
+TextColor3 = Color3.new(1,1,1),
+Position = UDim2.new(0.5,0,0,57),
+Size = UDim2.new(0.9,0,0,15),
+ClearTextOnFocus = false
+})
 local label = create("TextLabel",{
 Parent = frame,
 AnchorPoint = Vector2.new(0,0),
 TextSize = 5,
 BorderSizePixel = 0,
 Text = "Made by IvanTheSkid >wO",
-TextColor3 = Color3.new(1,1,1),
+TextColor3 = Color3.new(0.5,0.5,0.5),
 Position = UDim2.new(0.5,0,1,0),
 TextYAlignment = Enum.TextYAlignment.Bottom
 })
@@ -179,6 +192,50 @@ local function taseall_func()
 		taser:Activate()
 		pcall(aaa)
 	end
+end 
+
+local function bringplayer_func(plr)
+	local RS = game:GetService("ReplicatedStorage")
+	local plrs = game:GetService("Players")
+	local lp = plrs.LocalPlayer
+	local char = lp.Character
+	local hrp = char.Humanoid.RootPart
+	local bkpk = lp.Backpack
+	RS.RoleManagerEvent:FireServer("ClaimRole", "Police")
+	local cuffs = bkpk:WaitForChild("Handcuffs")
+	local ogcf = hrp.CFrame
+	local trg = plr.Character.Humanoid.RootPart
+	local continue = false
+	RS.CuffConfirm.OnClientEvent:Once(function()
+		continue = true
+	end)
+	task.spawn(function()
+		local i = 1
+		while i<=3 and char and char.Parent and not continue do
+			cuffs.Parent = char
+			task.wait(1)
+			cuffs.Parent = bkpk
+			task.wait(0.2)
+			i=i+1
+		end
+		continue = true
+	end)
+	while char and char.Parent and not continue do
+		local vel = trg.Velocity
+		vel = CFrame.new(-vel.X/3, -vel.Y/3, -vel.Z/3)
+		hrp.CFrame = trg.CFrame:ToWorldSpace(vel)
+		cuffs.Parent = char
+		RS.CuffRequest:FireServer(plr)
+		task.wait()
+	end
+	RS.GrabRequest:FireServer()
+	task.wait(0.3)
+	hrp.CFrame = ogcf
+	task.wait(0.5)
+	RS.UnGrabRequest:FireServer()
+	cuffs.Parent = bkpk
+	RS.ToolUnequipped:FireServer()
+	for i=1,5 do RS.RoleManagerEvent:FireServer	("UnclaimRole", "Police")end
 end
 
 antiragdoll.MouseButton1Click:Connect(function()
@@ -198,6 +255,24 @@ taserspam.MouseButton1Click:Connect(function()
 		taserspam_func()
 	else 
 		taserspam.TextColor3 = Color3.new(1,0,0)
+	end 
+end)
+
+bringplayer.FocusLost:Connect(function(enter)
+	if enter then 
+		local pattern = bringplayer.Text:lower()
+		for i,v in game:GetService("Players"):GetPlayers() do 
+			if v.Name:lower():sub(1,#pattern)==pattern or v.DisplayName:lower():sub(1,#pattern)==pattern then 
+				bringplayer.Text = ""
+				return bringplayer_func(v)
+			end 
+		end 
+		for i=1,3 do 
+			bringplayer.TextColor3 = Color3.new(1,0,0)
+			task.wait(0.25)
+			bringplayer.TextColor3 = Color3.new(1,1,1)
+			task.wait(0.25)
+		end 
 	end 
 end)
 
