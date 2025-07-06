@@ -1,5 +1,9 @@
 local bi = {}
 
+local rawget = rawget or function(obj,idx)return obj[idx]end 
+local rawset = rawset or function(obj,idx,val)obj[idx]=val end 
+local rawequal = rawequal or function(a,b)return a==b end 
+
 function bi.count(obj)
 	local count = 0
 	for i,v in next,obj do 
@@ -13,7 +17,7 @@ function bi.find(obj,trg,usekeys)
 		obj = bi.keys(obj)
 	end 
 	for idx,val in next,obj do 
-		if val == trg then 
+		if rawequal(val,trg) then 
 			return idx 
 		end 
 	end 
@@ -35,6 +39,10 @@ function bi.copy(dest,src,includemt)
 		setmetatable(dest,getmetatable(src))
 	end 
 	return dest 
+end 
+
+function bi.clone(obj,includemt)
+	return bi.copy({},obj,includemt)
 end 
 
 function bi.split(str, delimiter)
@@ -63,7 +71,7 @@ function bi.dictmerge(obj,add,override)
 		override = true 
 	end 
 	for idx,val in next,add do 
-		if obj[idx]~=nil then 
+		if not rawequal(rawget(obj,idx),nil) then 
 			if override then 
 				rawset(obj,idx,val)
 			end 
