@@ -61,6 +61,16 @@ TextColor3 = Color3.new(1,1,1),
 Position = UDim2.new(0.5,0,0,39),
 Size = UDim2.new(0.9,0,0,15)
 })
+local taserwall = create("TextButton",{
+Parent = frame,
+AnchorPoint = Vector2.new(0.5,0),
+BackgroundColor3 = Color3.fromRGB(27,27,27),
+BorderSizePixel = 0,
+Text = "Taser Wall",
+TextColor3 = Color3.new(1,1,1),
+Position = UDim2.new(0.5,0,0,57),
+Size = UDim2.new(0.9,0,0,15)
+})
 local bringplayer = create("TextBox",{
 Parent = frame,
 AnchorPoint = Vector2.new(0.5,0),
@@ -70,7 +80,7 @@ Text = "",
 PlaceholderText = "Bring player...",
 PlaceholderColor3 = Color3.new(0.5,0.5,0.5),
 TextColor3 = Color3.new(1,1,1),
-Position = UDim2.new(0.5,0,0,57),
+Position = UDim2.new(0.5,0,0,73),
 Size = UDim2.new(0.9,0,0,15),
 ClearTextOnFocus = false
 })
@@ -194,6 +204,47 @@ local function taseall_func()
 	end
 end 
 
+local function taserwall_func()
+	local rmt = game:GetService("ReplicatedStorage"):WaitForChild("RoleManagerEvent")
+	local lp = game:GetService("Players").LocalPlayer 
+	local char = lp.Character or lp.CharacterAdded:Wait() and lp.Character 
+	local bkpk = lp:WaitForChild("Backpack")
+	local tasers = {}
+	local WIDTH = 10 
+	local HEIGHT = 6 
+	local TOTAL = 10*6
+	for _=1,TOTAL do 
+		rmt:FireServer("ClaimRole","Police")
+	end 
+	while #tasers < TOTAL and char and char.Parent do 
+		for _,tool in bkpk:GetChildren() do 
+			if tool:IsA("Tool") and tool.Name=="Taser" and not table.find(tasers,tool) then 
+				table.insert(tasers,tool)
+			end 
+		end 
+		task.wait() 
+	end 
+	local forX = WIDTH/2 - 0.5 
+	local forY = HEIGHT/2 - 0.5
+	local i = 1
+	for x=-forX,forX do 
+		for y=-forY,forY do 
+			tasers[i].GripPos = Vector3.new(x,y,0)
+			i = i + 1
+		end 
+	end 
+	for _,taser in tasers do 
+		taser.Parent = char 
+	end 
+	while char and char.Parent do 
+		for _,taser in tasers do 
+			taser.Parent = char 
+			taser:Activate()
+		end 
+		task.wait(1)
+	end 
+end 
+
 local function bringplayer_func(plr)
 	local RS = game:GetService("ReplicatedStorage")
 	local plrs = game:GetService("Players")
@@ -277,5 +328,6 @@ bringplayer.FocusLost:Connect(function(enter)
 end)
 
 taseall.MouseButton1Click:Connect(taseall_func)
+taserwall.MouseButton1Click:Connect(taserwall)
 
 antiragdoll_func()
