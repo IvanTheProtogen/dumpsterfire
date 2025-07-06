@@ -21,6 +21,10 @@ The Lua module that provides all functions Lua devs need.
 - <type: string> bi.tabletype(obj: table) -- Indicates if the given table is an array or dictionary.
 - <reversed: table> bi.reverse(obj: table) -- Returns a reversed version of a given table, recommended for array use only.
 - <result: table> bi.nodupe(obj: table) -- Returns a clone of a given table with no duplicates, recommended for array use only.
+- <slice: table> bi.slice(obj: table, start: number, end: number) -- Returns a slice of the given table.
+- <shuffled: table> bi.shuffle(obj: table) -- Returns a shuffled version of a given table.
+- <readonly: table> bi.readonly(obj: table) -- Returns a read-only version of the table.
+- <hook: table> bi.hookmt(func: function) -- Returns a metatable, that can be used to hook nearly all table/userdata operations.
 
 TIP: Declare `obj = nil` after using any `obj` that is temporary, so the garbage collector can remove the object from the memory easier, once the reference is nullified.
 
@@ -39,6 +43,7 @@ function bi.count(obj)
 	end 
 	return count 
 end 
+
 
 function bi.find(obj,trg,usekeys)
 	if usekeys then 
@@ -220,6 +225,36 @@ function bi.nodupe(obj)
 		end 
 	end 
 	return new 
+end 
+
+function bi.slice(t, first, last)
+	local sliced = {}
+	for i = first or 1, last or #t do
+		table.insert(sliced, t[i])
+	end
+	return sliced
+end
+
+function bi.shuffle(t)
+	local shuffled = bi.clone(t)
+	for i = #shuffled, 2, -1 do
+		local j = math.random(i)
+		shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
+	end
+	return shuffled
+end
+
+function bi.readonly(obj)
+	local new = {}
+	return setmetatable(new,{
+		__index = obj,
+		__newindex = function()error("the table is read-only")end,
+		__metatable = "The metatable is locked"
+	})
+end 
+
+function bi.hookmt(func)
+	return bi.readonly(function(...)return func(...)end)
 end 
 
 return bi
