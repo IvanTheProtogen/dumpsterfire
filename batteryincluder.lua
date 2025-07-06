@@ -14,10 +14,24 @@ end
 
 function bi.find(obj,trg,usekeys)
 	if usekeys then 
-		obj = bi.keys(obj)
+		for idx,val in next,obj do 
+			if rawequal(idx,trg) then 
+				return true 
+			end 
+		end 
+		return false 
+	else 
+		for idx,val in next,obj do 
+			if rawequal(val,trg) then 
+				return idx 
+			end 
+		end
 	end 
+end 
+
+function bi.funcfind(obj,func)
 	for idx,val in next,obj do 
-		if rawequal(val,trg) then 
+		if func(idx,val) then 
 			return idx 
 		end 
 	end 
