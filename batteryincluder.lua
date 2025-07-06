@@ -19,7 +19,8 @@ The Lua module that provides all functions Lua devs need.
 - <result: table> bi.arraycorrect(obj: table) -- Returns a clone of `obj`, where the indexes are corrected. For example, `{[1]='a',[3]='b',[10]='c'}` can be corrected into `{[1]='a',[2]='b',[3]='c'}`.
 - <objCreator: function> bi.class(funcs: table) -- Python-inspired class creator. Useful for OOP.
 - <type: string> bi.tabletype(obj: table) -- Indicates if the given table is an array or dictionary.
-
+- <reversed: table> bi.reverse(obj: table) -- Returns a reversed version of a given table, recommended for array use only.
+- <result: table> bi.nodupe(obj: table) -- Returns a clone of a given table with no duplicates, recommended for array use only.
 
 TIP: Declare `obj = nil` after using any `obj` that is temporary, so the garbage collector can remove the object from the memory easier, once the reference is nullified.
 
@@ -200,6 +201,25 @@ function bi.tabletype(obj)
 		end 
 	end 
 	return "array"
+end 
+
+function bi.reverse(obj)
+	local new,obj = {},bi.arraycorrect(obj)
+	for i=#obj,1,-1 do 
+		table.insert(new,rawget(obj,i))
+	end 
+	obj = nil 
+	return new 
+end 
+
+function bi.nodupe(obj)
+	local new = {} 
+	for _,val in next,obj do 
+		if not bi.find(new,val) then 
+			table.insert(new,val)
+		end 
+	end 
+	return new 
 end 
 
 return bi
