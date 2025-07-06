@@ -8,6 +8,17 @@ function bi.count(obj)
 	return count 
 end 
 
+function bi.find(obj,trg,usekeys)
+	if usekeys then 
+		obj = bi.keys(obj)
+	end 
+	for idx,val in next,obj do 
+		if val == trg then 
+			return idx 
+		end 
+	end 
+end
+
 function bi.clear(obj)
 	for idx,_ in next,obj do 
 		rawset(obj,idx,nil)
@@ -82,11 +93,11 @@ function bi.filter(obj,filter,usekeys)
 	elseif type(filter) == "table" then 
 		for idx,val in next,obj do 
 			if usekeys then 
-				if table.find(filter,idx) then 
+				if bi.find(filter,idx) then 
 					rawset(obj,idx,nil)
 				end 
 			else 
-				if table.find(filter,val) then 
+				if bi.find(filter,val) then 
 					rawset(obj,idx,nil)
 				end 
 			end 
