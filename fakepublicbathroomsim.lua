@@ -210,9 +210,9 @@ local function taserwall_func()
 	local char = lp.Character or lp.CharacterAdded:Wait() and lp.Character 
 	local bkpk = lp:WaitForChild("Backpack")
 	local tasers = {}
-	local WIDTH = 10 
-	local HEIGHT = 6 
-	local TOTAL = 10*6
+	local WIDTH = 15 
+	local HEIGHT = 9 
+	local TOTAL = WIDTH*HEIGHT
 	for _=1,TOTAL do 
 		rmt:FireServer("ClaimRole","Police")
 	end 
@@ -235,13 +235,19 @@ local function taserwall_func()
 	end 
 	for _,taser in tasers do 
 		taser.Parent = char 
+		for __,part in taser:GetDescendants() do 
+			if part:IsA("BasePart") then 
+				part.CanCollide = false 
+				part.CanTouch = false 
+			end
+		end
 	end 
 	while char and char.Parent do 
 		for _,taser in tasers do 
 			taser.Parent = char 
 			taser:Activate()
 		end 
-		task.wait(1)
+		task.wait(0.25)
 	end 
 end 
 
