@@ -133,4 +133,13 @@ function bi.class(funcs)
 	end
 end 
 
+function bi.tabletype(obj)
+	for key,_ in next,obj do 
+		if type(key)~="number" then 
+			return "dictionary"
+		end 
+	end 
+	return "array"
+end
+
 return bi
