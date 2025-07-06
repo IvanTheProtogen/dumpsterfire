@@ -253,8 +253,22 @@ function bi.readonly(obj)
 	})
 end 
 
+local mm = {
+	"__index","__newindex","__call","__concat",
+	"__tostring","__namecall","__add","__sub",
+	"__pow","__div","__mul","__type",
+	"__pairs","__ipairs","__iter","__iterator",
+	"__unm","__mod","__idiv","__gc",
+	"__usedindex","__band","__bor","__bxor","
+	"__bnot","__shl","__shr","__eq",
+	"__lt","__le","__len","__close"
+}
 function bi.hookmt(func)
-	return bi.readonly(function(...)return func(...)end)
+	local mt = {}
+	for _,name in next,mm do 
+		mt[name] = function(self,...)return func(self,name,...)end 
+	end 
+	return mt
 end 
 
 return bi
