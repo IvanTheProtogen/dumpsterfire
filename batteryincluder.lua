@@ -1,3 +1,30 @@
+--[[
+
+BATTERYINCLUDER 
+
+The Lua module that provides all functions Lua devs need.
+
+- <count: number> bi.count(obj: table) -- Returns the amount of items in the table. It is more suitable than `#obj`, if you wanna know the true item amount.
+- <key: any> bi.find(obj: table, trg: any, usekeys: boolean) -- Searches for the given value or key in the table, returns the key or boolean.
+- <key: any> bi.funcfind(obj: table, func: function) -- `bi.find`, but it uses a custom function to find given value and/or key.
+- <nil> bi.clear(obj: table) -- Emptifies the given table.
+- <dest: table> bi.copy(dest: table, src: table, includemt: boolean) -- Copies items from `src` to `dest` and returns `dest`. Can strap the metatable from `src` onto `dest`.
+- <obj: table> bi.clone(obj: table, includemt: boolean) -- Returns a clone of the given table. Shortcut to `bi.copy({},obj)`.
+- <result: table> bi.split(str: string, delimiter: string) -- Splits the string and returns the table containing all slices.
+- <merged: table> bi.dictmerge(obj: table, add: table, override: boolean) -- Returns a merge of 2 tables, mostly compatible with dictionaries. If `override` is `true`, then already existing items in `obj` will be replaced with items in `add`.
+- <merged: table> bi.arraymerge(obj: table, add: table) -- Returns a merge of 2 tables, mostly compatible with arrays.
+- <result: table> bi.filter(obj: table, filter: table|function, usekeys: boolean) -- Returns a filtered version of `obj`. If `filter` is a `table`, then existing keys or values in `obj` will be removed if they also exist in `filter`. `filter` as a `function` allows custom filtering.
+- <keys: table> bi.keys(obj: table) -- Returns a table of keys in `obj`.
+- <sum: number> bi.sum(t: table) -- Returns a sum of all numbers in `t`.
+- <result: table> bi.arraycorrect(obj: table) -- Returns a clone of `obj`, where the indexes are corrected. For example, `{[1]='a',[3]='b',[10]='c'}` can be corrected into `{[1]='a',[2]='b',[3]='c'}`.
+- <objCreator: function> bi.class(funcs: table) -- Python-inspired class creator. Useful for OOP.
+- <type: string> bi.tabletype(obj: table) -- Indicates if the given table is an array or dictionary.
+
+
+TIP: Declare `obj = nil` after using any `obj` that is temporary, so the garbage collector can remove the object from the memory easier, once the reference is nullified.
+
+]]
+
 local bi = {}
 
 local rawget = rawget or function(obj,idx)return obj[idx]end 
@@ -173,6 +200,6 @@ function bi.tabletype(obj)
 		end 
 	end 
 	return "array"
-end
+end 
 
 return bi
