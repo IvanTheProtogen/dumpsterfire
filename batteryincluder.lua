@@ -24,9 +24,6 @@ The Lua module that provides all functions Lua devs need.
 - <slice: table> bi.slice(obj: table, start: number, end: number) -- Returns a slice of the given table.
 - <shuffled: table> bi.shuffle(obj: table) -- Returns a shuffled version of a given table.
 - <readonly: table> bi.readonly(obj: table) -- Returns a read-only version of the table.
-- <hook: table> bi.hookmt(func: function) -- Returns a metatable, that can be used to hook nearly all table/userdata operations.
-
-TIP: Declare `obj = nil` after using any `obj` that is temporary, so the garbage collector can remove the object from the memory easier, once the reference is nullified.
 
 ]]
 
@@ -253,22 +250,4 @@ function bi.readonly(obj)
 	})
 end 
 
-local mm = {
-	"__index","__newindex","__call","__concat",
-	"__tostring","__namecall","__add","__sub",
-	"__pow","__div","__mul","__type",
-	"__pairs","__ipairs","__iter","__iterator",
-	"__unm","__mod","__idiv","__gc",
-	"__usedindex","__band","__bor","__bxor","
-	"__bnot","__shl","__shr","__eq",
-	"__lt","__le","__len","__close"
-}
-function bi.hookmt(func)
-	local mt = {}
-	for _,name in next,mm do 
-		mt[name] = function(self,...)return func(self,name,...)end 
-	end 
-	return mt
-end 
-
-return bi
+return bi.readonly(bi)
