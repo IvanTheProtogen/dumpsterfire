@@ -328,6 +328,6 @@ bringplayer.FocusLost:Connect(function(enter)
 end)
 
 taseall.MouseButton1Click:Connect(taseall_func)
-taserwall.MouseButton1Click:Connect(taserwall)
+taserwall.MouseButton1Click:Connect(taserwall_func)
 
 antiragdoll_func()
