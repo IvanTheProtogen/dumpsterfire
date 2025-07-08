@@ -1,3 +1,19 @@
+-- XASEMOTE 
+
+-- A service to help protect data.
+-- Primarily designed to secure communications via remotes.
+
+-- Example use:
+--[[
+local xasemote = require("xasemote") -- path to this module...
+function RemoteFunction.OnServerInvoke(plr,...)
+	local data = xasemote.unpack(plr,...) -- retrieve and decrypt data
+	if data == "TIME" then
+		return xasemote.pack(plr,tick()) -- encrypt and send data
+	end 
+end
+]] 
+
 local xasemote = {}
 
 -- those hash, encrypt and decrypt functions aren't cryptographically secure
