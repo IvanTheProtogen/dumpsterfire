@@ -32,7 +32,7 @@ children[2].FocusLost:Connect(function(enterPressed)
 	end
 end)
 Instance.new("UIScale",gui).Scale = 0.6
-gui.Frame.Position = UDim2.new(0,1280,0,0)
+gui.Frame.Position = UDim2.new(0,1551,0,-84)
 
 local chat = game:GetService("Chat")
 local function trickster(msg)
