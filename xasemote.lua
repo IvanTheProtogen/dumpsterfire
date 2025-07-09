@@ -113,7 +113,6 @@ function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUni
 	data = xasemote.decrypt(data,key)
 	local checkA = xasemote.hash(data)
 	assert(checkA==hashA,'decrypt check')
-	local usesUnix = false
 	if unix~=nil or hashX~=nil or hashY~=nil or acceptedUnixRange~=nil then 
 		assert(type(unix)=='string','unix type')
 		assert(type(hashX)=='string','unix decrypt type')
@@ -127,9 +126,8 @@ function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUni
 		unix = ('d'):unpack(unix)
 		local realunix = tick()
 		assert((realunix-acceptedUnixRange <= unix) and (unix <= realunix+acceptedUnixRange), 'unix check')
-		usesUnix = true
 	end
-	return data,usesUnix
+	return data
 end 
 
 return xasemote
