@@ -83,7 +83,7 @@ end
 
 function xasemote.pack(key,data,...)
 	assert(#({...})==0, 'argument amount')
-	if not isserver then 
+	if key or isserver then else 
 		key = key or players.LocalPlayer
 	end 
 	if typeof(key)=='Instance' then 
@@ -103,7 +103,7 @@ end
 
 function xasemote.unpack(key,data,acceptedUnixRange,...)
 	assert(#({...})==0, 'argument amount')
-	if not isserver then 
+	if key or isserver then else 
 		key = key or players.LocalPlayer
 	end 
 	if typeof(key)=='Instance' then 
