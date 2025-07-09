@@ -7,6 +7,7 @@
 --[[
 local xasemote = require("xasemote") -- path to this module...
 function RemoteFunction.OnServerInvoke(plr,data,...)
+	assert(#({...})==0,'argument size')
 	local command = xasemote.unpack(plr,data) -- retrieve and decrypt data 
 	if command == "time" then
 		return xasemote.pack(plr,tick()) -- encrypt and send data 
@@ -101,8 +102,12 @@ function xasemote.pack(key,data,...)
 	return {data,hashA,hashB,hashC,unix,hashX,hashY}
 end 
 
-function xasemote.unpack(key,data,acceptedUnixRange,...)
+function xasemote.unpack(key,data,acceptedUnixL,acceptedUnixR,...)
 	assert(#({...})==0, 'argument amount')
+	assert(type(data)=='table', 'packet type')
+	assert(getmetatable(data)==nil, 'metatable hook attempt')
+	assert(data[1] and data[2] and data[3] and data[4] and data[5] and data[6] and data[7], 'packet structure')
+	assert(#data==7, 'packet size')
 	if key or isserver then else 
 		key = key or players.LocalPlayer
 	end 
@@ -124,7 +129,8 @@ function xasemote.unpack(key,data,acceptedUnixRange,...)
 	assert(type(data[5])=='string','unix type')
 	assert(type(data[6])=='string','unix decrypt type')
 	assert(type(data[7])=='string','unix encrypt type')
-	acceptedUnixRange = (acceptedUnixRange and tonumber(acceptedUnixRange)) or 120
+	acceptedUnixL = (acceptedUnixL and tonumber(acceptedUnixL)) or 60 
+	acceptedUnixR = (acceptedUnixR and tonumber(acceptedUnixR)) or 120
 	local checkY = xasemote.hash(data[5])
 	assert(checkY==data[7],'unix encrypt check')
 	local dunix = xasemote.decrypt(data[5],key)
@@ -132,7 +138,7 @@ function xasemote.unpack(key,data,acceptedUnixRange,...)
 	assert(checkX==data[6],'unix decrypt check')
 	dunix = ('d'):unpack(dunix)
 	local realunix = tick()
-	assert((realunix-acceptedUnixRange <= dunix) and (dunix <= realunix+acceptedUnixRange), 'unix check')
+	assert((realunix-acceptedUnixL <= dunix) and (dunix <= realunix+acceptedUnixR), 'unix check')
 	return new 
 end 
 
