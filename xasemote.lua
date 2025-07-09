@@ -7,9 +7,9 @@
 --[[
 local xasemote = require("xasemote") -- path to this module...
 function RemoteFunction.OnServerInvoke(plr,...)
-	local data = xasemote.unpack(plr,...) -- retrieve and decrypt data
+	local data = xasemote.unpack(plr,...,10) -- retrieve and decrypt data 
 	if data == "TIME" then
-		return xasemote.pack(plr,tick(),10) -- encrypt and send data
+		return xasemote.pack(plr,tick(),true) -- encrypt and send data
 	end 
 end
 ]] 
@@ -97,7 +97,8 @@ function xasemote.pack(plr,data,dynamic)
 	return data,hashA,hashB,hashC,unix,hashX,hashY
 end 
 
-function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUnixRange)
+function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUnixRange,...)
+	assert(#({...})~=0, 'argument amount')
 	assert(typeof(plr)=='Instance' and plr.ClassName=='Player','player type')
 	assert(type(data)=='string','data type')
 	assert(type(hashA)=='string','decrypt hash type')
@@ -111,6 +112,7 @@ function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUni
 	data = xasemote.decrypt(data,key)
 	local checkA = xasemote.hash(data)
 	assert(checkA==hashA,'decrypt check')
+	local usesUnix = false
 	if unix~=nil or hashX~=nil or hashY~=nil or acceptedUnixRange~=nil then 
 		assert(type(unix)=='string','unix type')
 		assert(type(hashX)=='string','unix decrypt type')
@@ -124,8 +126,9 @@ function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUni
 		unix = ('d'):unpack(unix)
 		local realunix = tick()
 		assert((realunix-acceptedUnixRange <= unix) and (unix <= realunix+acceptedUnixRange), 'unix check')
+		usesUnix = true
 	end
-	return data 
+	return data,usesUnix
 end 
 
 return xasemote 
