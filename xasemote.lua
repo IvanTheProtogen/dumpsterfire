@@ -6,11 +6,12 @@
 -- Example use:
 --[[
 local xasemote = require("xasemote") -- path to this module...
-function RemoteFunction.OnServerInvoke(plr,...)
-	local data = xasemote.unpack(plr,...,10) -- retrieve and decrypt data 
-	if data == "TIME" then
-		return xasemote.pack(plr,tick()) -- encrypt and send data
+function RemoteFunction.OnServerInvoke(plr,data,...)
+	local command = xasemote.unpack(plr,data) -- retrieve and decrypt data 
+	if command == "time" then
+		return xasemote.pack(plr,tick()) -- encrypt and send data 
 	end 
+	return xasemote.pack(plr,"unknown")
 end
 ]] 
 
@@ -58,6 +59,7 @@ end
 
 
 local players = game:GetService("Players")
+local isserver = game:GetService("RunService"):IsServer()
 
 function xasemote.genkey(plr)
 	local key = 0
@@ -79,12 +81,16 @@ function xasemote.genkey(plr)
 	return xasemote.hash(key)
 end 
 
-function xasemote.pack(plr,data,...)
+function xasemote.pack(key,data,...)
 	assert(#({...})==0, 'argument amount')
-	assert(typeof(plr)=='Instance' and plr.ClassName=='Player','player type')
-	data = tostring(data)
+	if not isserver then 
+		key = key or players.LocalPlayer
+	end 
+	if typeof(key)=='Instance' then 
+		assert(plr.ClassName=='Player','player type')
+		key = xasemote.genkey(key)
+	else assert(type(key)=='string','key type') end 
 	local hashA = xasemote.hash(data)
-	local key = xasemote.genkey(plr)
 	local hashC = xasemote.hash(key)
 	data = xasemote.encrypt(data,key)
 	local hashB = xasemote.hash(data)
@@ -92,37 +98,41 @@ function xasemote.pack(plr,data,...)
 	local hashX = xasemote.hash(unix)
 	unix = xasemote.encrypt(unix,key)
 	local hashY = xasemote.hash(unix)
-	return data,hashA,hashB,hashC,unix,hashX,hashY
+	return {data,hashA,hashB,hashC,unix,hashX,hashY}
 end 
 
-function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUnixRange,...)
+function xasemote.unpack(key,data,acceptedUnixRange,...)
 	assert(#({...})==0, 'argument amount')
-	assert(typeof(plr)=='Instance' and plr.ClassName=='Player','player type')
-	assert(type(data)=='string','data type')
-	assert(type(hashA)=='string','decrypt hash type')
-	assert(type(hashB)=='string','encrypt hash type')
-	assert(type(hashC)=='string','key hash type')
-	local key = xasemote.genkey(plr)
+	if not isserver then 
+		key = key or players.LocalPlayer
+	end 
+	if typeof(key)=='Instance' then 
+		assert(plr.ClassName=='Player','player type')
+		key = xasemote.genkey(key)
+	else assert(type(key)=='string','key type') end 
+	assert(type(data[1])=='string','data type')
+	assert(type(data[2])=='string','decrypt hash type')
+	assert(type(data[3])=='string','encrypt hash type')
+	assert(type(data[4])=='string','key hash type')
 	local checkC = xasemote.hash(key)
-	assert(checkC==hashC,'key check')
-	local checkB = xasemote.hash(data)
-	assert(checkB==hashB,'encrypt check')
-	data = xasemote.decrypt(data,key)
-	local checkA = xasemote.hash(data)
-	assert(checkA==hashA,'decrypt check')
-	assert(type(unix)=='string','unix type')
-	assert(type(hashX)=='string','unix decrypt type')
-	assert(type(hashY)=='string','unix encrypt type')
+	assert(checkC==data[4],'key check')
+	local checkB = xasemote.hash(data[1])
+	assert(checkB==data[3],'encrypt check')
+	local new = xasemote.decrypt(data[1],key)
+	local checkA = xasemote.hash(new)
+	assert(checkA==data[2],'decrypt check')
+	assert(type(data[5])=='string','unix type')
+	assert(type(data[6])=='string','unix decrypt type')
+	assert(type(data[7])=='string','unix encrypt type')
 	acceptedUnixRange = (acceptedUnixRange and tonumber(acceptedUnixRange)) or 120
-	local checkY = xasemote.hash(unix)
-	assert(hashY==checkY,'unix encrypt check')
-	unix = xasemote.decrypt(unix,key)
-	local checkX = xasemote.hash(unix)
-	assert(hashX==checkX,'unix decrypt check')
-	unix = ('d'):unpack(unix)
+	local checkY = xasemote.hash(data[5])
+	assert(checkY==data[7],'unix encrypt check')
+	local dunix = xasemote.decrypt(data[5],key)
+	local checkX = xasemote.hash(dunix)
+	assert(checkX==data[6],'unix decrypt check')
+	dunix = ('d'):unpack(dunix)
 	local realunix = tick()
-	assert((realunix-acceptedUnixRange <= unix) and (unix <= realunix+acceptedUnixRange), 'unix check')
-	end
+	assert((realunix-acceptedUnixRange <= dunix) and (dunix <= realunix+acceptedUnixRange), 'unix check')
 	return data
 end 
 
