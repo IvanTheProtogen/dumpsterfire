@@ -87,7 +87,7 @@ function xasemote.pack(key,data,...)
 		key = key or players.LocalPlayer
 	end 
 	if typeof(key)=='Instance' then 
-		assert(plr.ClassName=='Player','player type')
+		assert(key.ClassName=='Player','player type')
 		key = xasemote.genkey(key)
 	else assert(type(key)=='string','key type') end 
 	local hashA = xasemote.hash(data)
@@ -107,7 +107,7 @@ function xasemote.unpack(key,data,acceptedUnixRange,...)
 		key = key or players.LocalPlayer
 	end 
 	if typeof(key)=='Instance' then 
-		assert(plr.ClassName=='Player','player type')
+		assert(key.ClassName=='Player','player type')
 		key = xasemote.genkey(key)
 	else assert(type(key)=='string','key type') end 
 	assert(type(data[1])=='string','data type')
