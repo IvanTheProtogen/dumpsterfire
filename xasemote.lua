@@ -133,7 +133,7 @@ function xasemote.unpack(key,data,acceptedUnixRange,...)
 	dunix = ('d'):unpack(dunix)
 	local realunix = tick()
 	assert((realunix-acceptedUnixRange <= dunix) and (dunix <= realunix+acceptedUnixRange), 'unix check')
-	return data
+	return new 
 end 
 
 return xasemote
