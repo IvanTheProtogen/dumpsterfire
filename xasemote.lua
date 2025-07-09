@@ -79,14 +79,15 @@ function xasemote.genkey(plr)
 	return xasemote.hash(key)
 end 
 
-function xasemote.pack(plr,data,dynamic)
+function xasemote.pack(plr,data,dynamic,...)
+	assert(#({...})==0, 'argument amount')
 	assert(typeof(plr)=='Instance' and plr.ClassName=='Player','player type')
 	data = tostring(data)
-	local hashB = xasemote.hash(data)
+	local hashA = xasemote.hash(data)
 	local key = xasemote.genkey(plr)
 	local hashC = xasemote.hash(key)
 	data = xasemote.encrypt(data,key)
-	local hashA = xasemote.hash(data)
+	local hashB = xasemote.hash(data)
 	local unix,hashX,hashY
 	if dynamic then 
 		unix = ('d'):pack(tick())
@@ -98,7 +99,7 @@ function xasemote.pack(plr,data,dynamic)
 end 
 
 function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUnixRange,...)
-	assert(#({...})~=0, 'argument amount')
+	assert(#({...})==0, 'argument amount')
 	assert(typeof(plr)=='Instance' and plr.ClassName=='Player','player type')
 	assert(type(data)=='string','data type')
 	assert(type(hashA)=='string','decrypt hash type')
@@ -131,4 +132,4 @@ function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUni
 	return data,usesUnix
 end 
 
-return xasemote 
+return xasemote
