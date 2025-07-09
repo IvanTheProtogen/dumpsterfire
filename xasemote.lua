@@ -9,7 +9,7 @@ local xasemote = require("xasemote") -- path to this module...
 function RemoteFunction.OnServerInvoke(plr,...)
 	local data = xasemote.unpack(plr,...,10) -- retrieve and decrypt data 
 	if data == "TIME" then
-		return xasemote.pack(plr,tick(),true) -- encrypt and send data
+		return xasemote.pack(plr,tick()) -- encrypt and send data
 	end 
 end
 ]] 
@@ -79,7 +79,7 @@ function xasemote.genkey(plr)
 	return xasemote.hash(key)
 end 
 
-function xasemote.pack(plr,data,dynamic,...)
+function xasemote.pack(plr,data,...)
 	assert(#({...})==0, 'argument amount')
 	assert(typeof(plr)=='Instance' and plr.ClassName=='Player','player type')
 	data = tostring(data)
@@ -88,13 +88,10 @@ function xasemote.pack(plr,data,dynamic,...)
 	local hashC = xasemote.hash(key)
 	data = xasemote.encrypt(data,key)
 	local hashB = xasemote.hash(data)
-	local unix,hashX,hashY
-	if dynamic then 
-		unix = ('d'):pack(tick())
-		hashX = xasemote.hash(unix)
-		unix = xasemote.encrypt(unix,key)
-		hashY = xasemote.hash(unix)
-	end
+	local unix = ('d'):pack(tick())
+	local hashX = xasemote.hash(unix)
+	unix = xasemote.encrypt(unix,key)
+	local hashY = xasemote.hash(unix)
 	return data,hashA,hashB,hashC,unix,hashX,hashY
 end 
 
@@ -113,19 +110,18 @@ function xasemote.unpack(plr,data,hashA,hashB,hashC,unix,hashX,hashY,acceptedUni
 	data = xasemote.decrypt(data,key)
 	local checkA = xasemote.hash(data)
 	assert(checkA==hashA,'decrypt check')
-	if unix~=nil or hashX~=nil or hashY~=nil or acceptedUnixRange~=nil then 
-		assert(type(unix)=='string','unix type')
-		assert(type(hashX)=='string','unix decrypt type')
-		assert(type(hashY)=='string','unix encrypt type')
-		assert(type(acceptedUnixRange)=='number','accepted unix range type')
-		local checkY = xasemote.hash(unix)
-		assert(hashY==checkY,'unix encrypt check')
-		unix = xasemote.decrypt(unix,key)
-		local checkX = xasemote.hash(unix)
-		assert(hashX==checkX,'unix decrypt check')
-		unix = ('d'):unpack(unix)
-		local realunix = tick()
-		assert((realunix-acceptedUnixRange <= unix) and (unix <= realunix+acceptedUnixRange), 'unix check')
+	assert(type(unix)=='string','unix type')
+	assert(type(hashX)=='string','unix decrypt type')
+	assert(type(hashY)=='string','unix encrypt type')
+	acceptedUnixRange = (acceptedUnixRange and tonumber(acceptedUnixRange)) or 120
+	local checkY = xasemote.hash(unix)
+	assert(hashY==checkY,'unix encrypt check')
+	unix = xasemote.decrypt(unix,key)
+	local checkX = xasemote.hash(unix)
+	assert(hashX==checkX,'unix decrypt check')
+	unix = ('d'):unpack(unix)
+	local realunix = tick()
+	assert((realunix-acceptedUnixRange <= unix) and (unix <= realunix+acceptedUnixRange), 'unix check')
 	end
 	return data
 end 
