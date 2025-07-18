@@ -3,7 +3,7 @@
 -- [[[[[ WORK IN PROGRESS ]]]]]
 
 -- dont execute if it's already executed
-assert(getgenv().deltaenhui)
+assert(not getgenv().deltaenhui)
 getgenv().deltaenhui = true
 
 -- make sure it's running with Delta
