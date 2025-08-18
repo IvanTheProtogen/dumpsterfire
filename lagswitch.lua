@@ -1,3 +1,5 @@
+game:service("NetworkClient"):SetOutgoingKBPSLimit(0)
+
 local NS = settings():service("NetworkSettings")
 local IRL = "IncomingReplicationLag"
 local lagswitch
