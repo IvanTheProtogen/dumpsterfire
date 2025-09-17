@@ -1,7 +1,7 @@
 -- it's a lazy script hub, not so user friendly but simple
 -- made for myself personally
 
-local suc,msg = pcall(endndunction()
+local suc,msg = pcall(function()
 
 local cache = {}
 local httpsvc = game:GetService("HttpService")
