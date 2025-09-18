@@ -1,6 +1,18 @@
 -- it's a lazy script hub, not so user friendly but simple
 -- made for myself personally
 
+if customScriptHubivan then
+	return 
+end 
+getgenv().customScriptHubivan = true 
+
+local src = [[
+
+if customScriptHubivan then 
+	return 
+end 
+getgenv().customScriptHubivan = true 
+
 local suc,msg = pcall(function()
 
 local cache = {}
@@ -45,13 +57,6 @@ end
 end)
 
 if not suc then warn("cache sys //",msg) end 
-
-if customScriptHubivan then
-	return 
-end 
-getgenv().customScriptHubivan = true 
-
-local src = [[
 
 local ExtraAbilities=getgenv().ExtraAbilities or loadstring(game:HttpGet("http://github.com/IvanTheProtogen/ExtraAbilities/raw/main/main.lua"))();
 
