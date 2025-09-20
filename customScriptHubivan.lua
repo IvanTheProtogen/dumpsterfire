@@ -13,51 +13,6 @@ if customScriptHubivan then
 end 
 getgenv().customScriptHubivan = true 
 
-local suc,msg = pcall(function()
-
-local cache = {}
-local httpsvc = game:GetService("HttpService")
-local function updatecache()
-	writefile("httpcache",httpsvc:JSONEncode(cache))
-end
-pcall(function()
-	cache = httpsvc:JSONEncode(readfile("httpcache")) or cache
-end)
-
-local function execHTTP(func,url,...)
-	local result = func(url,...)
-	cache[url] = result
-	updatecache()
-	return result
-end
-local spawn = task.spawn
-local function forHTTP(func,url,...)
-	local index = cache[url]
-	if index then 
-		spawn(pcall,execHTTP,func,url,...)
-		return index
-	end
-	return execHTTP(func,url,...)
-end
-
-local httpget;httpget = hookfunction(game.HttpGet,function(self,url,...)
-	return forHTTP(httpget,url,...)
-end)
-local httpgetasync;httpgetasync = hookfunction(game.HttpGetAsync,function(self,url,...)
-	return forHTTP(httpgetasync,url,...)
-end)
-
-for url,_ in cache do
-	task.spawn(function()
-		cache[url] = game:HttpGet(url)
-		updatecache() 
-	end)
-end 
-
-end)
-
-if not suc then warn("cache sys //",msg) end 
-
 local ExtraAbilities=getgenv().ExtraAbilities or loadstring(game:HttpGet("http://github.com/IvanTheProtogen/ExtraAbilities/raw/main/main.lua"))();
 
 local coregui = game:GetService("CoreGui")
